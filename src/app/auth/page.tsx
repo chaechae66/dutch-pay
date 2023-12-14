@@ -1,8 +1,12 @@
 "use client";
 
-import axios, { Axios, AxiosResponse } from "axios";
+import { functions } from "@/service/firebase/init";
+import axios, { AxiosResponse } from "axios";
+import { signInWithCustomToken } from "firebase/auth";
+import { httpsCallable } from "firebase/functions";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { authInit } from "../../service/firebase/init";
 
 interface Token {
   token_type: string;
@@ -15,6 +19,8 @@ interface Token {
 
 export default function auth() {
   const search = useSearchParams();
+
+  const kakaoCustomAuth = httpsCallable(functions, "kakaoCustomAuth");
 
   const code = search.get("code");
 
@@ -44,9 +50,19 @@ export default function auth() {
   };
 
   useEffect(() => {
-    getToken().then((token) => {
-      console.log(token);
-    });
+    getToken()
+      .then((kakaoToken) => {
+        return kakaoCustomAuth(kakaoToken["access_token"]);
+      })
+      .then((data) => {
+        return signInWithCustomToken(
+          authInit,
+          (data.data as { custom_token: string }).custom_token
+        );
+      })
+      .then((userCredential) => {
+        console.log(userCredential);
+      });
   }, []);
   return <></>;
 }
