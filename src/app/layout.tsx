@@ -3,7 +3,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Footer, Header, LoginBtn, Logo, Content } from "../style/layout.style";
+import { Footer, Header, LoginBtn, Logo, Content } from "./style/layout.style";
+import Link from "next/link";
+import StyledComponentsRegistry from "./registry";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,22 +22,24 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={inter.className}>
-        <Header>
-          <Logo>
-            <a href="#">DutchPay</a>
-          </Logo>
-          <LoginBtn>
-            <a
-              href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`}
-            >
-              카카오톡 로그인
-            </a>
-          </LoginBtn>
-        </Header>
-        <Content>{children}</Content>
-        <Footer width="100%" height="60px">
-          Copyright&copy;2024 All rights reserved
-        </Footer>
+        <StyledComponentsRegistry>
+          <Header>
+            <Logo>
+              <Link href={"/"}>DutchPay</Link>
+            </Logo>
+            <LoginBtn>
+              <Link
+                href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`}
+              >
+                카카오톡 로그인
+              </Link>
+            </LoginBtn>
+          </Header>
+          <Content>{children}</Content>
+          <Footer width="100%" height="60px">
+            Copyright&copy;2024 All rights reserved
+          </Footer>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
