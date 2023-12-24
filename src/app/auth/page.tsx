@@ -1,9 +1,7 @@
 "use client";
 
-import { functions } from "@/service/firebase/init";
 import axios, { AxiosResponse } from "axios";
 import { signInWithCustomToken } from "firebase/auth";
-import { httpsCallable } from "firebase/functions";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { authInit } from "../../service/firebase/init";
@@ -17,10 +15,12 @@ interface Token {
   scope: string;
 }
 
+interface CustomToken {
+  custom_token: string;
+}
+
 export default function auth() {
   const search = useSearchParams();
-
-  const kakaoCustomAuth = httpsCallable(functions, "kakaoCustomAuth");
 
   const code = search.get("code");
 
@@ -33,7 +33,7 @@ export default function auth() {
           client_id: `${process.env.NEXT_PUBLIC_REST_API_KEY}`,
           redirect_uri: `${process.env.NEXT_PUBLIC_REDIRECT_URI}`,
           code,
-          client_secret: "1UrIUbZ5RVTwPHlMQfZmvgWmV4PjLSmN",
+          client_secret: `${process.env.NEXT_PUBLIC_SECRET_KEY}`,
         },
         {
           headers: {
@@ -49,19 +49,28 @@ export default function auth() {
     }
   };
 
+  const getcustomToken = async (_token: string) => {
+    const { data } = await axios.get<CustomToken, AxiosResponse<CustomToken>>(
+      `https://kakaocustomtokenauth-fdttotrakq-du.a.run.app?token=${_token}`
+    );
+    return data.custom_token;
+  };
+
   useEffect(() => {
+    console.time("성능 재기");
     getToken()
       .then((kakaoToken) => {
-        return kakaoCustomAuth(kakaoToken["access_token"]);
+        return getcustomToken(kakaoToken["access_token"]);
       })
-      .then((data) => {
-        return signInWithCustomToken(
-          authInit,
-          (data.data as { custom_token: string }).custom_token
-        );
+      .then((customToken) => {
+        return signInWithCustomToken(authInit, customToken);
       })
       .then((userCredential) => {
         console.log(userCredential);
+        console.timeEnd("성능 재기");
+      })
+      .catch((e) => {
+        alert(e + "/n 불편을 드려 죄송합니다. 관리자에게 문의하세요");
       });
   }, []);
   return <></>;
