@@ -1,13 +1,11 @@
-"use client";
-
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Footer, Header, LoginBtn, Logo, Content } from "./style/layout.style";
-import Link from "next/link";
-import StyledComponentsRegistry from "./registry";
+import { Noto_Sans_KR } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const notoSansKr = Noto_Sans_KR({
+  weight: ["500"],
+  subsets: ["latin"],
+});
 
 const metadata: Metadata = {
   title: "Create Next App",
@@ -21,25 +19,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className={inter.className}>
-        <StyledComponentsRegistry>
-          <Header>
-            <Logo>
-              <Link href={"/"}>DutchPay</Link>
-            </Logo>
-            <LoginBtn>
-              <Link
-                href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`}
-              >
-                카카오톡 로그인
-              </Link>
-            </LoginBtn>
-          </Header>
-          <Content>{children}</Content>
-          <Footer width="100%" height="60px">
+      <head></head>
+      <body>
+        <div className={(notoSansKr.className, "w-dvw")}>
+          <section>{children}</section>
+          <footer className="flex h-[70px] w-auto items-center justify-center bg-[#f9f9f9]">
             Copyright&copy;2024 All rights reserved
-          </Footer>
-        </StyledComponentsRegistry>
+          </footer>
+        </div>
       </body>
     </html>
   );
