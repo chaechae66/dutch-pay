@@ -57,7 +57,6 @@ export default function auth() {
   };
 
   useEffect(() => {
-    console.time("성능 재기");
     getToken()
       .then((kakaoToken) => {
         return getcustomToken(kakaoToken["access_token"]);
@@ -67,7 +66,6 @@ export default function auth() {
       })
       .then((userCredential) => {
         console.log(userCredential);
-        console.timeEnd("성능 재기");
       })
       .catch((e) => {
         alert(e + "/n 불편을 드려 죄송합니다. 관리자에게 문의하세요");
