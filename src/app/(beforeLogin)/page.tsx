@@ -5,16 +5,6 @@ export default function Intro() {
   return (
     <>
       <div className="min-h-dvh w-full">
-        <header className="sticky top-0 grid h-[70px] w-auto grid-cols-[repeat(2,min-content)] items-center justify-between border-b-[0.5px] border-solid border-gray-200 bg-white px-[10px]">
-          <h2 className="text-[32px] text-indigo-700">DutchPay</h2>
-          <Link
-            href={"/login"}
-            className="w-[65px] rounded-[5px] bg-zinc-100 p-[10px] text-base font-light text-black"
-          >
-            로그인
-          </Link>
-        </header>
-
         <article className="m-h-[700px] grid w-full grid-cols-[repeat(2,auto)] items-center bg-[#CEE7DB]">
           <Image
             className="h-auto items-end justify-self-end"
