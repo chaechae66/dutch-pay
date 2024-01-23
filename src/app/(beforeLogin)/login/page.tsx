@@ -79,7 +79,7 @@ export default function Login() {
         </form>
       </Form>
       <Link
-        href={"/"}
+        href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`}
         className="mt-4 w-[20rem] bg-yellow-400 px-4 py-3 text-center"
       >
         카카오톡으로 간편하게 로그인

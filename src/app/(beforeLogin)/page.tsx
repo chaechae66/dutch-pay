@@ -7,7 +7,7 @@ export default function Intro() {
       <div className="min-h-dvh w-full">
         <article className="m-h-[700px] grid w-full grid-cols-[repeat(2,auto)] items-center bg-[#CEE7DB]">
           <Image
-            className="h-auto items-end justify-self-end"
+            className="h-auto w-auto items-end justify-self-end"
             width={400}
             height={220}
             alt="인트로 페이지 배너"
