@@ -88,6 +88,7 @@ video {
   border: 0;
   font-size: 100%;
   font: #333;
+  font-family: var(--font-notosanskr);
   vertical-align: baseline;
   box-sizing: border-box;
 }

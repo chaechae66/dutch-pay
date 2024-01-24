@@ -15,6 +15,7 @@ type Props = {
 const notoSansKr = Noto_Sans_KR({
   weight: ["500"],
   subsets: ["latin"],
+  variable: "--font-notosanskr",
 });
 
 const metadata: Metadata = {
@@ -24,11 +25,11 @@ const metadata: Metadata = {
 
 export default function RootLayout({ children, modal }: Props) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={`${notoSansKr.variable}`}>
       <head></head>
       <body>
         <StoreProvider>
-          <div className={`h-dvh w-dvw ${(notoSansKr.className, "w-dvw")}`}>
+          <div className={`h-dvh w-dvw `}>
             {modal}
             <section>{children}</section>
             <footer className="flex h-[70px] w-auto items-center justify-center bg-[#f9f9f9]">
