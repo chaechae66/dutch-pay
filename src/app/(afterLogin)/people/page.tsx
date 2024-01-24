@@ -1,3 +1,6 @@
+export const revalidate = 30;
+
+import ColorTable from "../_components/ColorTable";
 import CrudBtn from "../_components/CrudBtn";
 import Member from "../_components/Member";
 
@@ -64,13 +67,6 @@ export default function People() {
       image: null,
     },
   ];
-
-  const roleData = [
-    { id: 0, role: "방장", bgColor: "#3477eb" },
-    { id: 1, role: "부방장", bgColor: "#fa65da" },
-    { id: 2, role: "일반", bgColor: "#f1f1f1" },
-  ];
-
   return (
     <div className="grid h-full grid-cols-2 grid-rows-2">
       <div className="row-start-1 row-end-4 h-[37.5rem] w-full overflow-y-auto rounded-xl bg-white px-6 pb-6">
@@ -114,28 +110,7 @@ export default function People() {
             </tr>
           </thead>
           <tbody>
-            {roleData?.map((role) => (
-              <tr
-                className="h-12 border-b-[1px] border-solid border-gray-100"
-                key={role.id}
-              >
-                <td className="pl-4 align-middle">
-                  <div className="h-6 w-6 rounded border-[1px] border-solid border-gray-200"></div>
-                  <input type="checkbox" className="hidden" />
-                </td>
-                <td className="flex h-12 items-center">
-                  <div
-                    className={`mr-2 h-5 w-5 rounded`}
-                    style={{
-                      backgroundColor: role.bgColor,
-                    }}
-                  ></div>
-                  {role.bgColor}
-                </td>
-                <td className="align-middle">{role.role}</td>
-                <td className="pr-4 align-middle">없음</td>
-              </tr>
-            ))}
+            <ColorTable />
           </tbody>
         </table>
       </div>
