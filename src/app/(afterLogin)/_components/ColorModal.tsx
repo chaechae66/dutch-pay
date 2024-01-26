@@ -1,14 +1,15 @@
 "use client";
 
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import * as z from "zod";
-import axios from "axios";
 
 import BackBtn from "@/app/_components/BackBtn";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { RoleType } from "@/types/types.t";
 
 export default function ColorModal() {
+  const params = useSearchParams();
   const colorSchema = z.string().regex(/^#([a-f0-9]{6}|[a-f0-9]{3})$/, {
     message: "색상 코드가 아닙니다.",
   });
@@ -17,12 +18,26 @@ export default function ColorModal() {
   });
 
   const [color, setColor] = useState("#aabbcc");
-  const [role, setRole] = useState<string>("");
+  const [role, setRole] = useState<string>("0");
   const [memo, setMemo] = useState<null | string>(null);
 
   const validColorResult = colorSchema.safeParse(color);
   const validRoleResult = roleSchema.safeParse(role);
   const router = useRouter();
+
+  useEffect(() => {
+    const id = params?.get("id");
+
+    if (id) {
+      fetch(`/api/people/${id}`)
+        .then((data) => data.json())
+        .then((data: RoleType) => {
+          setColor(data.bgColor);
+          setRole(data.role);
+        })
+        .catch((e) => console.error(e));
+    }
+  }, []);
 
   const colorHandle: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -36,18 +51,16 @@ export default function ColorModal() {
       role,
     };
 
-    await axios
-      .post("/api/people/role/write", roleInfo)
-      .then(({ data }) => {
-        if (data.success) {
-          alert("저장이 완료되었습니다.");
-          router.refresh();
-          router.back();
-        }
+    await fetch("/api/people/role", {
+      method: "POST",
+      body: JSON.stringify(roleInfo),
+    })
+      .then(() => {
+        alert("성공적으로 저장이 되었습니다.");
+        router.refresh();
+        router.back();
       })
-      .catch((e) => {
-        console.error(e);
-      });
+      .catch((e) => console.error(e));
   };
 
   return (
@@ -79,7 +92,7 @@ export default function ColorModal() {
           <label className="mt-[10px] basis-16">역할</label>
           <input
             placeholder={"역할"}
-            defaultValue={role!}
+            value={role!}
             onChange={(e) => {
               setRole(e.target.value);
             }}
@@ -104,7 +117,7 @@ export default function ColorModal() {
         </div>
         <div className="w-full text-center">
           <button type="submit" className="rounded bg-red-400 p-2 text-white">
-            저장
+            {params?.get("mode") === "create" ? "저장" : "수정"}
           </button>
         </div>
       </div>
