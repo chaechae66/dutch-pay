@@ -2,25 +2,58 @@
 
 import { RoleType } from "@/types/types.t";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function ColorTd({ role }: { role: RoleType }) {
+interface Props {
+  role: RoleType;
+  checkItemHandler: (id: string, isChecked: boolean) => void;
+  checkItem: Set<string>;
+  isAllChecked: boolean;
+}
+
+export default function ColorTd({
+  role,
+  checkItemHandler,
+  checkItem,
+  isAllChecked,
+}: Props) {
   const [isChecked, setIsChecked] = useState(false);
+
+  const router = useRouter();
+
+  const checkHandle = (id: string) => {
+    checkItemHandler(id, isChecked);
+  };
+
+  const showModal = () => {
+    router.push(`people/color?mode=read&id=${role._id}`);
+  };
+
+  useEffect(() => {
+    if (isAllChecked) {
+      setIsChecked(true);
+    } else {
+      setIsChecked(false);
+    }
+  }, [isAllChecked]);
+
   return (
     <tr
       className={`h-12 border-b-[1px] border-solid border-gray-100 ${
-        isChecked && "bg-gray-100"
+        checkItem.has(role._id) && "bg-gray-100"
       }`}
       key={role._id}
     >
       <td className="pl-4 align-middle">
         <div
-          className="h-6 w-6 rounded border-[1px] border-solid border-gray-200"
+          className="z-10 h-6 w-6 rounded border-[1px] border-solid border-gray-200"
           onClick={() => {
             setIsChecked((prev) => !prev);
+            checkHandle(role._id);
           }}
         >
-          {isChecked && (
+          {checkItem.has(role._id) && (
             <div className="h-6 w-6 rounded bg-red-300 p-1">
               <Image
                 width={20}
@@ -31,9 +64,13 @@ export default function ColorTd({ role }: { role: RoleType }) {
             </div>
           )}
         </div>
-        <input type="checkbox" className="hidden" defaultChecked={isChecked} />
       </td>
-      <td className="flex h-12 items-center">
+      <td
+        className="flex h-12 items-center"
+        onClick={() => {
+          showModal();
+        }}
+      >
         <div
           className={`mr-2 h-5 w-5 rounded`}
           style={{
@@ -42,8 +79,22 @@ export default function ColorTd({ role }: { role: RoleType }) {
         ></div>
         {role.bgColor}
       </td>
-      <td className="align-middle">{role.role}</td>
-      <td className="pr-4 align-middle">없음</td>
+      <td
+        className="align-middle"
+        onClick={() => {
+          showModal();
+        }}
+      >
+        {role.role}
+      </td>
+      <td
+        className="pr-4 align-middle"
+        onClick={() => {
+          showModal();
+        }}
+      >
+        없음
+      </td>
     </tr>
   );
 }
