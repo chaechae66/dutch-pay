@@ -8,9 +8,9 @@ export default function Member({ person }: { person: MemberType }) {
   const router = useRouter();
   return (
     <tr
-      onClick={() => {
-        router.push("/people/member");
-      }}
+      // onClick={() => {
+      //   router.push("/people/member");
+      // }}
       className="h-16 border-b-[1px] border-solid border-gray-100 font-normal"
       key={person.id}
     >

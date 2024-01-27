@@ -1,5 +1,5 @@
 import BackBtn from "@/app/_components/BackBtn";
-import Image from "next/image";
+import MemberModalImg from "./MemberModalImg";
 
 export default function MemberModal() {
   return (
@@ -10,17 +10,7 @@ export default function MemberModal() {
           <BackBtn />
         </div>
         <div className="mb-6 flex w-full flex-col items-center justify-center">
-          <div className="flex h-[80px] w-[80px] justify-center rounded-full bg-gray-200">
-            <Image
-              src={"/no_image.svg"}
-              alt="프로필 사진 없을 때"
-              width={40}
-              height={40}
-            />
-          </div>
-          <button className="mt-2 rounded bg-slate-700 p-[4px] text-xs text-white">
-            사진 업로드
-          </button>
+          <MemberModalImg />
         </div>
         <div className="mb-2 flex items-start">
           <label className="mt-[10px] basis-16">닉네임</label>
