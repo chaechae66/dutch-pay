@@ -3,7 +3,7 @@ import ColorTable from "../_components/ColorTable";
 import Member from "../_components/Member";
 import MemberTable from "../_components/MemberTable";
 
-async function getData() {
+async function getRoleData() {
   const res = await fetch("http://localhost:3000/api/people/role", {
     cache: "no-cache",
   });
@@ -15,71 +15,21 @@ async function getData() {
   return res.json();
 }
 
-export default async function People() {
-  const peopleData = [
-    {
-      id: 1,
-      nickname: "은일",
-      role: { id: 0, role: "방장", bgColor: "#3477eb" },
-      image: null,
-    },
-    {
-      id: 2,
-      nickname: "은이",
-      role: { id: 2, role: "일반", bgColor: "#f1f1f1" },
-      image: null,
-    },
-    {
-      id: 3,
-      nickname: "은삼",
-      role: { id: 2, role: "일반", bgColor: "#f1f1f1" },
-      image: null,
-    },
-    {
-      id: 4,
-      nickname: "은사",
-      role: { id: 2, role: "일반", bgColor: "#f1f1f1" },
-      image: null,
-    },
-    {
-      id: 5,
-      nickname: "은오",
-      role: { id: 2, role: "일반", bgColor: "#f1f1f1" },
-      image: null,
-    },
-    {
-      id: 6,
-      nickname: "은일",
-      role: { id: 2, role: "일반", bgColor: "#f1f1f1" },
-      image: null,
-    },
-    {
-      id: 7,
-      nickname: "은이",
-      role: { id: 2, role: "일반", bgColor: "#f1f1f1" },
-      image: null,
-    },
-    {
-      id: 8,
-      nickname: "은삼",
-      role: { id: 2, role: "일반", bgColor: "#f1f1f1" },
-      image: null,
-    },
-    {
-      id: 9,
-      nickname: "은사",
-      role: { id: 1, role: "부방장", bgColor: "#ff8ae6" },
-      image: null,
-    },
-    {
-      id: 10,
-      nickname: "은오",
-      role: { id: 1, role: "부방장", bgColor: "#ff8ae6" },
-      image: null,
-    },
-  ];
+async function getMemberData() {
+  const res = await fetch("http://localhost:3000/api/people/member", {
+    cache: "no-cache",
+  });
 
-  const roleData = await getData();
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+export default async function People() {
+  const roleData = await getRoleData();
+  const peopleData = await getMemberData();
 
   return (
     <div className="grid h-full grid-cols-2 grid-rows-2">

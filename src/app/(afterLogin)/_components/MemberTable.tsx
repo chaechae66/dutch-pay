@@ -41,7 +41,7 @@ export default function MemberTable({ peopleData }: Props) {
           </thead>
           <tbody>
             {peopleData?.map((person) => (
-              <Member person={person} key={person.id} />
+              <Member person={person} key={person._id} />
             ))}
           </tbody>
         </table>

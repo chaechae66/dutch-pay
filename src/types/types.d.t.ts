@@ -1,5 +1,5 @@
 export interface MemberType {
-  id: number;
+  _id: number;
   nickname: string;
   role: { id: number; role: string; bgColor: string };
   image: null | string;
